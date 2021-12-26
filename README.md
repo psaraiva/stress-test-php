@@ -10,7 +10,7 @@ Use the library in real context, with [PlayLumenDice](https://github.com/psaraiv
 - `docker exec -it stress-test-app composer install` (Optional: `--no-dev`)
 - `docker exec -it stress-test-app composer dump-autoload --optimize`
 
-## Excecute files:
+## Execute files:
 - **Sequential**: `docker exec -it stress-test-app php app/sequential.php` (linear)
 - **Wait**: `docker exec -it stress-test-app php app/wait.php` (parallel)
 - **Sequential-http-client**: `docker exec -it stress-test-app php app/sequential-http-client` (linear)
