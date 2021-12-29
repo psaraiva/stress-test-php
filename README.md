@@ -11,9 +11,14 @@ Use the library in real context, with [PlayLumenDice](https://github.com/psaraiv
 - `docker exec -it stress-test-app composer dump-autoload --optimize`
 
 ## Excecute files:
-- **Sequential**: `docker exec -it stress-test-app php app/sequential.php` (linear)
-- **Wait**: `docker exec -it stress-test-app php app/wait.php` (parallel)
-- **Sequential-http-client**: `docker exec -it stress-test-app php app/sequential-http-client` (linear)
+- **Request API - Sequential**: `docker exec -it stress-test-app php app/api/sequential.php`
+- **Request API - Sequential (http-client)**: `docker exec -it stress-test-app php app/api/sequential.php`
+- **Request API - Parallel**: `docker exec -it stress-test-app php app/api/parallel.php`
+- **Create Image - Sequential**: `docker exec -it stress-test-app php app/image/sequencial.php`
+- **Create Image - Parallel**: `docker exec -it stress-test-app php app/image/parallel.php`
+
+## Monitoring processes
+- **Htop**: `docker exec -it stress-test-app htop`
 
 ## Catch IP PlayLumenDice:
 To send request to API, get de IP docker and update files.
@@ -30,17 +35,32 @@ In `docker-compose.yml` is ref `networks` to `playlumendice_app-network`, confir
 [note](https://gist.github.com/psaraiva/51467d6a49a46709e4c46006ee6015c1#network)
 
 # output
-- Linear
+- Request API Sequential
 ```
 Request: 50 
-{"dice":[3]}
-Request 50 total execution time in seconds: 1.130000.
-Script total execution time in seconds: 120.910000.
+{"dice":[1]}
+Request 50 total execution time in seconds: 1.110000.
+Script total execution time in seconds: 126.000000.
+Script memory usage: 2 Mb.
 ```
-- Parallel
+- Request API Parallel
 ```
-Request 43 total execution time in seconds: 14.470000.
-{"dice":[5]}
-Request 47 total execution time in seconds: 14.710000.
-Script total execution time in seconds: 28.530000.
+Request 42 total execution time in seconds: 14.080000.
+{"dice":[6]}
+Request 50 total execution time in seconds: 10.300000.
+Script total execution time in seconds: 28.040000.
+Script memory usage: 4 Mb.
+```
+- Image Sequential
+```
+Image: 50 
+Image 50 total execution time in seconds: 0.990000.
+Script total execution time in seconds: 45.810000.
+Script memory usage: 2 Mb.
+```
+- Image Parallel
+```
+Image 37 total execution time in seconds: 4.510000.
+Script total execution time in seconds: 57.150000.
+Script memory usage: 4 Mb.
 ```

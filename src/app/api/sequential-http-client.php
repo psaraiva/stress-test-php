@@ -1,9 +1,9 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../Bag.php';
+
+Bag::debug();
 
 use Amp\Http\Client\HttpClientBuilder;
 use Amp\Http\Client\Request;
@@ -12,7 +12,6 @@ use Amp\Loop;
 $script_time_start = microtime(true);
 
 Loop::run(function () {
-
     $range = range(0, 49);
     foreach ($range as $i) {
         $time_start = microtime(true);
@@ -33,3 +32,4 @@ Loop::run(function () {
 
 $scritp_total_time = number_format(microtime(true) - $script_time_start, 2);
 echo sprintf("Script total execution time in seconds: %f.%s", $scritp_total_time, PHP_EOL);
+echo sprintf("Script memory usage: %s.%s", Bag::memoryUsageFormatted(), PHP_EOL);

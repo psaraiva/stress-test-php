@@ -1,18 +1,19 @@
 <?php
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+
+require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../Bag.php';
+
+use Amp\Parallel\Worker\DefaultPool;
+use function Amp\ParallelFunctions\parallelMap;
+use function Amp\Promise\wait;
+
+Bag::debug();
 
 $script_time_start = microtime(true);
 
-$range = range(0, 49);
-foreach ($range as $i) {
-    echo sprintf("Request: %d %s", $i+1, PHP_EOL);
-    sendRequest($i+1);
-}
+$promises = parallelMap(range(1, 50), function ($index) {
+    echo sprintf("Request: %d.%s", $index, PHP_EOL);
 
-function sendRequest($index): array
-{
     $time_start = microtime(true);
 
     $ch = curl_init();
@@ -32,7 +33,10 @@ function sendRequest($index): array
     $total_time = number_format(microtime(true) - $time_start, 2);
     echo sprintf("Request %d total execution time in seconds: %f.%s", $index, $total_time, PHP_EOL);
     return [$index => $total_time];
-}
+});
+
+wait($promises);
 
 $scritp_total_time = number_format(microtime(true) - $script_time_start, 2);
 echo sprintf("Script total execution time in seconds: %f.%s", $scritp_total_time, PHP_EOL);
+echo sprintf("Script memory usage: %s.%s", Bag::memoryUsageFormatted(), PHP_EOL);
